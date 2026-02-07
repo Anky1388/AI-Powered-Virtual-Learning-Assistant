@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage.jsx";
 import ChatLoader from "./ChatLoader.jsx";
-import { sendChatMessage } from "../../services/chatbotService";
+import { sendChatMessage } from "../../services/chatbotService.js";
 
 /*
   Chatbot Component

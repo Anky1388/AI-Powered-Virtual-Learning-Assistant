@@ -5,6 +5,7 @@ import { postRequest } from "../services/api";
 const AuthContext = createContext();
 
 // 2️ Custom hook (clean usage)
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -18,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(JSON.parse(storedUser));
     }
     setLoading(false);
@@ -37,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
       setUser(data.user);
       return { success: true };
-    } catch (_error) {
+    } catch {
       return {
         success: false,
         message: "Invalid email or password",
