@@ -1,9 +1,6 @@
-import { useContext } from "react";
-import { LanguageContext } from "../../context/LanguageContext";
+import LanguageToggle from "./LanguageToggle";
 
 export default function Navbar({ title = "Student Dashboard" }) {
-  const { lang, toggleLanguage } = useContext(LanguageContext);
-
   return (
     <header className="w-full bg-white shadow-sm px-6 py-4 flex items-center justify-between">
       
@@ -16,14 +13,9 @@ export default function Navbar({ title = "Student Dashboard" }) {
       <div className="flex items-center space-x-4">
 
         {/* Language Toggle */}
-        <button
-          onClick={toggleLanguage}
-          className="border px-3 py-1 rounded text-sm hover:bg-gray-100"
-        >
-          {lang === "en" ? "हिंदी" : "English"}
-        </button>
+        <LanguageToggle />
 
-        {/* User Profile Placeholder */}
+        {/* User Profile */}
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">
             S

@@ -1,25 +1,45 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { SUPPORTED_LANGUAGES, APP_CONSTANTS } from "../utils/constants";
+
 
 /*
-  Create Language Context
-  This will store the current language (English / Hindi)
+  LanguageContext
+  Purpose:
+  - Manage current language (English / Hindi)
+  - Provide toggle function
+  - Accessible throughout the app
 */
-export const LanguageContext = createContext();
 
-export function LanguageProvider({ children }) {
-  // Global language state
-  const [language, setLanguage] = useState("en");
+// 1️⃣ Create Context
+const LanguageContext = createContext();
 
-  // Toggle function
+// 2️⃣ Provider Component
+export const LanguageProvider = ({ children }) => {
+  // Default language: English
+  const [language, setLanguage] = useState(APP_CONSTANTS.DEFAULT_LANGUAGE);
+
+  // Toggle between English and Hindi
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "hi" : "en"));
+    setLanguage((prev) =>
+      prev === SUPPORTED_LANGUAGES.EN
+        ? SUPPORTED_LANGUAGES.HI
+        : SUPPORTED_LANGUAGES.EN
+    );
   };
-
+  
   return (
     <LanguageContext.Provider
-      value={{ language, toggleLanguage }}
+      value={{
+        language,
+        toggleLanguage,
+      }}
     >
       {children}
     </LanguageContext.Provider>
   );
-}
+};
+
+// 3️⃣ Custom Hook (Best Practice)
+export const useLanguage = () => {
+  return useContext(LanguageContext);
+};
