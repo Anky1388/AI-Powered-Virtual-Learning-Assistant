@@ -11,9 +11,9 @@
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
-    LOGOUT: "/auth/logout",
+    LOGIN: "/api/auth/login",
+    REGISTER: "/api/auth/register",
+    LOGOUT: "/api/auth/logout",
   },
 
   CHATBOT: {
@@ -33,6 +33,7 @@ export const API_ENDPOINTS = {
   },
 };
 
+
 /* ===========================
    SUPPORTED LANGUAGES
 =========================== */
@@ -48,11 +49,13 @@ export const SUPPORTED_LANGUAGES = {
   },
 };
 
-/* Default language */
+
+/* Default Language */
 export const DEFAULT_LANGUAGE = SUPPORTED_LANGUAGES.ENGLISH.code;
 
+
 /* ===========================
-   APP-LEVEL CONSTANTS
+   APP CONFIGURATION
 =========================== */
 
 export const APP_CONFIG = {
@@ -70,6 +73,7 @@ export const APP_CONFIG = {
   },
 };
 
+
 /* ===========================
    STORAGE KEYS
 =========================== */
@@ -79,3 +83,14 @@ export const STORAGE_KEYS = {
   USER_ROLE: "user_role",
   LANGUAGE: "app_language",
 };
+
+
+
+
+// export const APP_CONSTANTS = {
+//   API_ENDPOINTS,
+//   SUPPORTED_LANGUAGES,
+//   DEFAULT_LANGUAGE,
+//   APP_CONFIG,
+//   STORAGE_KEYS,
+// };

@@ -1,35 +1,24 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 import jwt
 import datetime
+from flask import current_app
 
-app = Flask(__name__)
-CORS(app)
-bcrypt = Bcrypt(app)
+auth_bp = Blueprint('auth_bp', __name__)
+bcrypt = Bcrypt()
 
-app.config['SECRET_KEY'] = 'your_secret_key'
-
-# Fake Database
+# Fake database (temporary)
 users = {}
 
-# Home Route
-@app.route('/')
-def home():
-    return jsonify({"message": "Backend Running Successfully"})
 
 # ==========================
 # REGISTER
 # ==========================
-@app.route('/auth/register', methods=['POST'])
+@auth_bp.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
-
+    data = request.json
     email = data.get('email')
     password = data.get('password')
-
-    if not email or not password:
-        return jsonify({"message": "Email and password required"}), 400
 
     if email in users:
         return jsonify({"message": "User already exists"}), 400
@@ -42,13 +31,13 @@ def register():
 
     return jsonify({"message": "User registered successfully"}), 201
 
+
 # ==========================
 # LOGIN
 # ==========================
-@app.route('/auth/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-
+    data = request.json
     email = data.get('email')
     password = data.get('password')
 
@@ -58,30 +47,28 @@ def login():
         return jsonify({"message": "User not found"}), 404
 
     if not bcrypt.check_password_hash(user["password"], password):
-        return jsonify({"message": "Invalid email or password"}), 401
+        return jsonify({"message": "Entered password or email is not valid"}), 401
 
     token = jwt.encode({
         'email': email,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)
-    }, app.config['SECRET_KEY'], algorithm="HS256")
+    }, current_app.config['SECRET_KEY'], algorithm="HS256")
 
     return jsonify({
         "message": "Login successful",
         "token": token
     })
 
+
 # ==========================
 # FORGOT PASSWORD
 # ==========================
-@app.route('/auth/forgot-password', methods=['POST'])
+@auth_bp.route('/forgot-password', methods=['POST'])
 def forgot_password():
-    data = request.get_json()
+    data = request.json
     email = data.get('email')
 
     if email not in users:
         return jsonify({"message": "User not found"}), 404
 
     return jsonify({"message": "Password reset link sent (demo mode)"})
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)

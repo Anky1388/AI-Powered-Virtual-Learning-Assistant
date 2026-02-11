@@ -1,31 +1,41 @@
 // import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+
 // import Login from "./pages/Login";
+// import Signup from "./pages/Signup";
+// import ForgotPassword from "./pages/ForgotPassword";
 // import Dashboard from "./pages/Dashboard";
+// import Timetable from "./pages/Timetable";
+
 // import { useAuth } from "./context/AuthContext";
 
-// /*
-//   App Component
-//   -------------
-//   - Handles application routing
-//   - Protects private routes
-//   - Keeps structure clean & scalable
-// */
-
-// // 🔒 Protected Route Wrapper
 // const PrivateRoute = ({ children }) => {
-//   const { user } = useAuth();
+//   const { user, loading } = useAuth();
+
+//   if (loading) {
+//     return (
+//       <div className="flex items-center justify-center h-screen">
+//         <p className="text-lg font-semibold">Loading...</p>
+//       </div>
+//     );
+//   }
+
 //   return user ? children : <Navigate to="/login" replace />;
 // };
 
 // export default function App() {
 //   return (
 //     <Router>
+//       <ToastContainer position="top-right" autoClose={2000} />
+
 //       <Routes>
-
-//         {/* Public Route */}
+//         {/* Public */}
 //         <Route path="/login" element={<Login />} />
+//         <Route path="/signup" element={<Signup />} />
+//         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-//         {/* Protected Route */}
+//         {/* Protected */}
 //         <Route
 //           path="/dashboard"
 //           element={
@@ -35,44 +45,59 @@
 //           }
 //         />
 
-//         {/* Default Route */}
-//         <Route path="*" element={<Navigate to="/login" replace />} />
+//         <Route
+//           path="/timetable"
+//           element={
+//             <PrivateRoute>
+//               <Timetable />
+//             </PrivateRoute>
+//           }
+//         />
 
+//         {/* Default */}
+//         <Route path="/" element={<Navigate to="/login" replace />} />
+//         <Route path="*" element={<Navigate to="/login" replace />} />
 //       </Routes>
 //     </Router>
 //   );
 // }
 
 
-
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import { useAuth } from "./context/AuthContext";
 
-/*
-  App Component
-  -------------
-  - Central routing configuration
-  - Public & protected routes
-  - Auth-based access control
-*/
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import Dashboard from "./pages/Dashboard";
+import Timetable from "./pages/Timetable";
 
-// 🔒 Protected Route Wrapper
+// Protected Route
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" replace />;
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Route */}
-        <Route path="/login" element={<Login />} />
 
-        {/* Protected Route */}
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* Protected Routes */}
         <Route
           path="/dashboard"
           element={
@@ -82,8 +107,19 @@ export default function App() {
           }
         />
 
-        {/* Default / Fallback Route */}
+        <Route
+          path="/timetable"
+          element={
+            <PrivateRoute>
+              <Timetable />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Default */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
+
       </Routes>
     </Router>
   );

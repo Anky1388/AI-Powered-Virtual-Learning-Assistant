@@ -1,71 +1,157 @@
+// import { createContext, useContext, useEffect, useState } from "react";
+// import { postRequest } from "../services/api";
+
+// const AuthContext = createContext();
+
+// // Custom Hook
+// export const useAuth = () => {
+//   return useContext(AuthContext);
+// };
+
+// // Provider
+// export const AuthProvider = ({ children }) => {
+//   const [user, setUser] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   // Restore user after refresh
+//   useEffect(() => {
+//     const storedUser = localStorage.getItem("user");
+//     const storedToken = localStorage.getItem("token");
+
+//     if (storedUser && storedToken) {
+//       try {
+//         setUser(JSON.parse(storedUser));
+//       } catch (error) {
+//         console.error("Invalid stored user data");
+//         localStorage.removeItem("user");
+//         localStorage.removeItem("token");
+//       }
+//     }
+
+//     setLoading(false);
+//   }, []);
+
+//   // Login
+//   const login = async (email, password) => {
+//     try {
+//       const response = await postRequest("/auth/login", {
+//         email,
+//         password,
+//       });
+
+//       if (response?.success) {
+//         localStorage.setItem("token", response.token);
+//         localStorage.setItem("user", JSON.stringify(response.user));
+
+//         setUser(response.user);
+
+//         return { success: true };
+//       }
+
+//       return {
+//         success: false,
+//         message: response?.message || "Login failed",
+//       };
+//     } catch (error) {
+//       return {
+//         success: false,
+//         message:
+//           error.response?.data?.message || "Login failed. Try again.",
+//       };
+//     }
+//   };
+
+//   // Logout
+//   const logout = () => {
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("user");
+//     setUser(null);
+//   };
+
+//   const value = {
+//     user,
+//     login,
+//     logout,
+//     loading,
+//     isAuthenticated: !!user && !!localStorage.getItem("token"),
+//   };
+
+//   return (
+//     <AuthContext.Provider value={value}>
+//       {!loading && children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { postRequest } from "../services/api";
 
-// 1️ Context create
 const AuthContext = createContext();
 
-// 2️ Custom hook (clean usage)
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-// 3️ Provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 4️  Page refresh ke baad user restore
+  // Restore user after refresh
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
     }
+
     setLoading(false);
   }, []);
 
-  // 5️ Login function
+  // Login
   const login = async (email, password) => {
     try {
-      const data = await postRequest("/login", {
+      const response = await postRequest("/auth/login", {
         email,
         password,
       });
 
-      // Token + user save
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      if (response.success) {
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        setUser(response.user);
 
-      setUser(data.user);
-      return { success: true };
-    } catch {
+        return { success: true };
+      } else {
+        return { success: false, message: response.message };
+      }
+    } catch (error) {
       return {
         success: false,
-        message: "Invalid email or password",
+        message:
+          error.response?.data?.message || "Login failed. Try again.",
       };
     }
   };
 
-  // 6️ Logout function
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
   };
 
-  // 7️ Context value
   const value = {
     user,
     login,
     logout,
     isAuthenticated: !!user,
+    loading,   // ✅ IMPORTANT FIX
   };
 
-  // 8️ Provider return
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
