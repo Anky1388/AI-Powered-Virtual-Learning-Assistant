@@ -10,10 +10,10 @@ import { SUPPORTED_LANGUAGES, APP_CONSTANTS } from "../utils/constants";
   - Accessible throughout the app
 */
 
-// 1️⃣ Create Context
+// 1️ Create Context
 const LanguageContext = createContext();
 
-// 2️⃣ Provider Component
+// 2️ Provider Component
 export const LanguageProvider = ({ children }) => {
   // Default language: English
   const [language, setLanguage] = useState(APP_CONSTANTS.DEFAULT_LANGUAGE);
@@ -39,7 +39,7 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
-// 3️⃣ Custom Hook (Best Practice)
+// 3️ Custom Hook (Best Practice)
 export const useLanguage = () => {
   return useContext(LanguageContext);
 };

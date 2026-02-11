@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Sidebar from "../components/layout/Sidebar";
-import Navbar from "../components/layout/Navbar";
+import Sidebar from "../components/common/Sidebar";
+import Navbar from "../components/common/Navbar";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import Chatbot from "../components/chatbot/Chatbot";
 

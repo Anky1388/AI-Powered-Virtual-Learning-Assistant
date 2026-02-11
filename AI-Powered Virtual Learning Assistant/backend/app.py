@@ -1,3 +1,4 @@
+from flask_cors import CORS
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -18,7 +19,7 @@ def chat():
 
     return jsonify({
         "reply": reply,
-        "confidence": 0.90
+        "confidence": 0.95
     })
 
 if __name__ == "__main__":

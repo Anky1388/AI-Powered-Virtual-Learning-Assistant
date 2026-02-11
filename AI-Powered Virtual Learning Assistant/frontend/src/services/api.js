@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 /*
   Axios API Service
   Handles all HTTP requests between React frontend and Flask backend
@@ -7,8 +8,8 @@ import axios from "axios";
 
 // 🔹 Create Axios instance
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // Flask backend base URL
-  timeout: 10000, // Request timeout (10s)
+  baseURL: "http://localhost:5000",
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },

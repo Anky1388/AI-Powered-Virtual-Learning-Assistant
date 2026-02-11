@@ -1,14 +1,14 @@
 import { useContext } from "react";
-import { LanguageContext } from "../../context/LanguageContext";
-import { useLanguage } from "../context/LanguageContext";
+// import { LanguageContext } from "../../context/LanguageContext";
+import { useLanguage } from "../../context/LanguageContext";
 
 /*
   LanguageToggle Component
   Allows user to switch between English and Hindi
 */
 export default function LanguageToggle() {
-  const { language, toggleLanguage } = useContext(LanguageContext);
-
+  // const { language, toggleLanguage } = useContext(LanguageContext);
+  const { language, toggleLanguage } = useLanguage();
   return (
     <button
       onClick={toggleLanguage}

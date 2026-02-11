@@ -17,10 +17,10 @@ import { LanguageProvider } from "./context/LanguageContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <LanguageProvider>
       <AuthProvider>
+    <LanguageProvider>
         <App />
-      </AuthProvider>
     </LanguageProvider>
+      </AuthProvider>
   </React.StrictMode>
 );
