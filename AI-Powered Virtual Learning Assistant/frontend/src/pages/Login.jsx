@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth(); // isAuthenticated ki zarurat yahan nahi
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -25,7 +25,8 @@ export default function Login() {
     try {
       const result = await login(email, password);
 
-      if (result?.success) {
+      if (result && result.success) {
+        // ✅ Successful login → go to dashboard
         navigate("/dashboard", { replace: true });
       } else {
         setError(result?.message || "Invalid email or password");
@@ -53,6 +54,7 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className="space-y-4">
 
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">
               Email
@@ -67,6 +69,7 @@ export default function Login() {
             />
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">
               Password
@@ -81,6 +84,7 @@ export default function Login() {
             />
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -90,6 +94,7 @@ export default function Login() {
           </button>
         </form>
 
+        {/* Links */}
         <div className="flex justify-between mt-4 text-sm">
           <Link to="/signup" className="text-blue-600 hover:underline">
             Sign Up
