@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-
+import AdminRoute from "./routes/AdminRoute";
+import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -52,6 +53,14 @@ export default function App() {
 
         <Route path="/" element={<Navigate to="/timetable" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route
+  path="/admin"
+  element={
+    <AdminRoute>
+      <AdminDashboard />
+    </AdminRoute>
+  }
+/>
 
       </Routes>
     </Router>

@@ -48,9 +48,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+
   const logout = () => {
-    localStorage.clear();
     setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  };
+  
+  const value = {
+    user,
+    login,
+    logout,
+    isAuthenticated: !!user,
+    isAdmin: user?.role === "admin",
+    loading,
   };
 
   return (
